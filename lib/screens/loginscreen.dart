@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:login_noruzi/assets/colors.dart';
+import 'package:login_noruzi/controller/logincontroller.dart';
 import 'package:login_noruzi/widgets/buttonwidget.dart';
 import 'package:login_noruzi/widgets/textformwidget.dart';
 import 'package:validators/validators.dart';
@@ -8,6 +9,7 @@ import 'package:validators/validators.dart';
 class LoginScreen extends StatelessWidget {
   LoginScreen({Key? key}) : super(key: key);
   final formKey = GlobalKey<FormState>();
+  LoginController loginController = Get.put(LoginController());
   var email;
   var password;
 
@@ -50,6 +52,7 @@ class LoginScreen extends StatelessWidget {
                                     MainAxisAlignment.spaceEvenly,
                                 children: [
                                   TextFormWidget(
+                                    controller: loginController.emailController,
                                     validator: (String? value) {
                                       if (value!.isEmpty) {
                                         return "enter email";
@@ -67,6 +70,8 @@ class LoginScreen extends StatelessWidget {
                                     },
                                   ),
                                   TextFormWidget(
+                                    controller:
+                                        loginController.passwordController,
                                     validator: (value) {
                                       if (value!.isEmpty) {
                                         return " enter password";
@@ -106,8 +111,12 @@ class LoginScreen extends StatelessWidget {
                                       onTap: () {
                                         formKey.currentState!.validate();
                                         formKey.currentState!.save();
-                                        print("Email: $email");
-                                        print("Password: $password");
+
+                                        loginController.login(
+                                            loginController
+                                                .emailController.text,
+                                            loginController
+                                                .passwordController.text);
                                       },
                                       child: ButtonWidget(
                                           clickText: "Login",
