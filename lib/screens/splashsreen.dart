@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:login_noruzi/assets/colors.dart';
+import 'package:login_noruzi/controller/splashcontroller.dart';
 import 'package:login_noruzi/routes.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -9,7 +10,7 @@ class SplashScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    handleScreen();
+    Get.put(SplashConntroller());
     return Scaffold(
       backgroundColor: whiteColor,
       body: const Center(
@@ -18,14 +19,5 @@ class SplashScreen extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  void handleScreen() async {
-    await Future.delayed(const Duration(seconds: 2));
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    if (prefs.getString("userToken") == null) {
-      Get.offNamed(Routes.loginScreen);
-    }
-    Get.offNamed(Routes.homeScreen);
   }
 }

@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       routes: {
-        Routes.splashScreen: (c) => SplashScreen(),
+        Routes.splashScreen: (c) =>const SplashScreen(),
         Routes.loginScreen: (c) => LoginScreen(),
         Routes.homeScreen: (c) => HomeScreen()
       },

@@ -4,14 +4,12 @@ import 'package:login_noruzi/assets/colors.dart';
 import 'package:login_noruzi/controller/logincontroller.dart';
 import 'package:login_noruzi/widgets/buttonwidget.dart';
 import 'package:login_noruzi/widgets/textformwidget.dart';
-import 'package:validators/validators.dart';
+
 
 class LoginScreen extends StatelessWidget {
   LoginScreen({Key? key}) : super(key: key);
   final formKey = GlobalKey<FormState>();
-  LoginController loginController = Get.put(LoginController());
-  var email;
-  var password;
+  final LoginController loginController = Get.put(LoginController());
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +34,7 @@ class LoginScreen extends StatelessWidget {
           SizedBox(
             height: Get.height * .17,
           ),
-          Container(
+          SizedBox(
               height: Get.height * .51,
               child: Form(
                   key: formKey,
@@ -45,7 +43,7 @@ class LoginScreen extends StatelessWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
-                          Container(
+                          SizedBox(
                               height: Get.height * .25,
                               child: Column(
                                 mainAxisAlignment:
@@ -53,10 +51,10 @@ class LoginScreen extends StatelessWidget {
                                 children: [
                                   TextFormWidget(
                                     controller: loginController.emailController,
-                                    validator: (String? value) {
+                                    validator: (value) {
                                       if (value!.isEmpty) {
                                         return "enter email";
-                                      } else if (!isEmail(value)) {
+                                      } else if (!GetUtils.isEmail(value)) {
                                         return "enter correct email";
                                       } else {
                                         return null;
@@ -65,9 +63,6 @@ class LoginScreen extends StatelessWidget {
                                     prefixicon: Icons.mail,
                                     lableText: "email",
                                     keyboardType: TextInputType.emailAddress,
-                                    onSaved: (value) {
-                                      email = value;
-                                    },
                                   ),
                                   TextFormWidget(
                                     controller:
@@ -86,13 +81,10 @@ class LoginScreen extends StatelessWidget {
                                     lableText: "password",
                                     obscureText: true,
                                     keyboardType: TextInputType.text,
-                                    onSaved: (value) {
-                                      password = value;
-                                    },
                                   ),
                                 ],
                               )),
-                          Container(
+                          SizedBox(
                             height: Get.height * .06,
                             child: InkWell(
                                 enableFeedback: false,
@@ -100,7 +92,7 @@ class LoginScreen extends StatelessWidget {
                                 child: const Text("forget password?",
                                     style: TextStyle(fontSize: 16))),
                           ),
-                          Container(
+                          SizedBox(
                               height: Get.height * .2,
                               // margin: const EdgeInsets.only(bottom: 5),
                               child: Column(
@@ -109,23 +101,23 @@ class LoginScreen extends StatelessWidget {
                                 children: [
                                   InkWell(
                                       onTap: () {
-                                        formKey.currentState!.validate();
-                                        formKey.currentState!.save();
-
-                                        loginController.login(
-                                            loginController
-                                                .emailController.text,
-                                            loginController
-                                                .passwordController.text);
+                                
+                                        if (formKey.currentState!.validate()) {
+                                          loginController.login(
+                                              loginController
+                                                  .emailController.text,
+                                              loginController
+                                                  .passwordController.text);
+                                        }
                                       },
-                                      child: ButtonWidget(
+                                      child: const ButtonWidget(
                                           clickText: "Login",
                                           clickColor: true)),
                                   InkWell(
                                       onTap: () {
                                         formKey.currentState!.validate();
                                       },
-                                      child: ButtonWidget(
+                                      child: const ButtonWidget(
                                           clickText: "Sign up",
                                           clickColor: false))
                                 ],
