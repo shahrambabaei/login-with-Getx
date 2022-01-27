@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:login_noruzi/model/task.dart';
 import 'dart:convert' as convert;
@@ -37,5 +38,29 @@ class TaskController extends GetxController {
     }
 
     loading.value = false;
+  }
+
+  addTask(String description) async {
+    var url = Uri.parse("https://api-nodejs-todolist.herokuapp.com/task");
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? userToken = prefs.getString("userToken");
+    Map<String, String> header = {
+      "Content-Type": "application/json",
+      "Authorization": "Bearer $userToken"
+    };
+    Map<String, String> body = {"description": description};
+
+    // Await the http get response, then decode the json-formatted response.
+    var response =
+        await http.post(url, body: convert.jsonEncode(body), headers: header);
+    if (response.statusCode == 201) {
+      var jsonResponse = convert.jsonDecode(response.body);
+      tasks.add(Task.fromJson(jsonResponse['data']));
+      print("---------$jsonResponse");
+      Get.back();
+    } else {
+      Get.snackbar("ERROR", "please enter correct info",
+          backgroundColor: Colors.red);
+    }
   }
 }
